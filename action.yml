@@ -1,0 +1,57 @@
+name: Debut
+description: Sign, notarize, package and publish a Mac app outside the App Store.
+branding:
+  icon: package
+  color: blue
+inputs:
+  version:
+    description: "The version to release: 1.2.3, alpha-1.1 or beta-2. It must match the app's Info.plist."
+    required: true
+  app:
+    description: Path to the .app. Defaults to "app" in debut.json.
+    required: false
+  key-id:
+    description: App Store Connect API Key ID.
+    required: true
+  issuer-id:
+    description: App Store Connect API Issuer ID.
+    required: true
+  key:
+    description: The API key file, base64 encoded.
+    required: true
+  certificate:
+    description: The Developer ID certificate as a .p12, base64 encoded.
+    required: true
+  certificate-password:
+    description: The password for the .p12.
+    required: true
+  github-token:
+    description: Token used to publish the release.
+    required: false
+    default: ${{ github.token }}
+runs:
+  using: composite
+  steps:
+    - name: Build Debut
+      shell: bash
+      run: swift build -c release --package-path "$GITHUB_ACTION_PATH"
+    - name: Prepare a temporary keychain
+      shell: bash
+      env:
+        DEBUT_CERT_P12: ${{ inputs.certificate }}
+        DEBUT_CERT_PASSWORD: ${{ inputs.certificate-password }}
+      run: |
+        "$GITHUB_ACTION_PATH/.build/release/debut" ci-keychain
+    - name: Release
+      shell: bash
+      env:
+        DEBUT_KEY_ID: ${{ inputs.key-id }}
+        DEBUT_ISSUER_ID: ${{ inputs.issuer-id }}
+        DEBUT_KEY: ${{ inputs.key }}
+        GH_TOKEN: ${{ inputs.github-token }}
+        INPUT_VERSION: ${{ inputs.version }}
+        INPUT_APP: ${{ inputs.app }}
+      run: |
+        args=(release "$INPUT_VERSION")
+        if [[ -n "$INPUT_APP" ]]; then args+=(--app "$INPUT_APP"); fi
+        "$GITHUB_ACTION_PATH/.build/release/debut" "${args[@]}"
