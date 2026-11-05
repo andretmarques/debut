@@ -12,7 +12,7 @@ debut doctor           # finds problems before Apple does
 debut release 1.0.0    # sign, notarize, DMG, publish, verify
 ```
 
-> Debut is early. It has shipped test apps, and hasn't been tried on many real projects yet.
+> **Debut is early.** It has shipped test apps, and hasn't been tried on many real projects yet. Creating a new certificate through `debut setup` hasn't been tested end to end, so please report what you find. It's only been run on native Swift apps so far.
 
 ## What you need
 
