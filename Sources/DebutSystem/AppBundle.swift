@@ -81,9 +81,12 @@ public struct AppBundle {
 
     /// Signing needs Apple's timestamp server, which fails now and then.
     private func signRetryingTimestamps(_ code: URL, identity: String) throws {
+        // A library's temporary build signature gets an identifier with a hash in it, which changes
+        // with each build. Only bundles have an identifier worth keeping.
+        let preserved = code.pathExtension == "dylib" ? "entitlements" : "entitlements,identifier"
         let arguments = [
             "--force", "--timestamp", "--options", "runtime",
-            "--preserve-metadata=entitlements,identifier",
+            "--preserve-metadata=\(preserved)",
             "--sign", identity, code.path,
         ]
         var result = try Shell.run("/usr/bin/codesign", arguments)

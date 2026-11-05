@@ -97,7 +97,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: ./build.sh
-      - uses: andretmarques/debut@v0
+      - uses: andretmarques/debut@v0.1.1
         with:
           version: ${{ inputs.version }}
           app: build/MyApp.app
