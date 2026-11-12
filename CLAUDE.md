@@ -17,10 +17,10 @@ Debut releases a finished Mac `.app` outside the App Store with one command ([RE
 - Build: `swift build`
 - Test: `swift test`. On a Mac with Command Line Tools and no Xcode, the Swift Testing macro plugin is not found, so run `swift test -Xswiftc -plugin-path -Xswiftc /Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing`.
 - Release build and install: `swift build -c release`, then use `.build/release/debut` (see [README.md](README.md#install)).
-- `debut setup` and `debut release`: ask André before running either. They use his Apple key and certificate, and `release` publishes to the repo `gh` finds in the current folder. There is no dry run: unknown flags are ignored, and `--no-publish` still signs and notarizes.
+- `debut setup` and `debut release`: ask the user before running either. They use the user's Apple key and certificate, and `release` publishes to the repo `gh` finds in the current folder. There is no dry run: unknown flags are ignored, and `--no-publish` still signs and notarizes.
 
 ## Status
 
 Project status lives in [README.md](README.md), in the note under the usage example.
 
-Debut's own versions are git tags (`git tag --list 'v*.*.*' --sort=-v:refname | head -1` is the latest). No file says how to cut one, so ask André before tagging.
+Debut's own versions are git tags (`git tag --list 'v*.*.*' --sort=-v:refname | head -1` is the latest). No file says how to cut one, so ask the user before tagging.
